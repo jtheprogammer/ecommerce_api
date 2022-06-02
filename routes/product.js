@@ -45,7 +45,7 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 });
 
 // GET PRODUCT
-router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
+router.get("/find/:id", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
 
@@ -56,19 +56,20 @@ router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
 });
 
 // GET MULTIPLE/ALL PRODUCTS
-router.get("/", verifyTokenAndAdmin, async (req, res) => {
+router.get("/", async (req, res) => {
   const qNew = req.query.new;
   const qCategory = req.query.category;
+  console.log(qCategory);
 
   try {
     let products;
 
     if(qNew) {
-      products = await Product.find().sort({ createdAt: -1 }).limit(1);
+      products = await Product.find().sort({ createdAt: -1 }).limit(2);
       console.log("Latest Product displayed");
     } else if(qCategory) {
       products = await Product.find({
-        categories : {
+        category : {
           $in: [qCategory],
         },
       });
