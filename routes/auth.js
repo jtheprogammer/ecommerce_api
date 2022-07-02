@@ -6,7 +6,7 @@ const JWT = require("jsonwebtoken");
 //REGISTER NEW USER
 router.post("/register", async (req, res) => {
   const newUser = new User({
-    _id: req.body._id,
+    username: req.body.username,
     email: req.body.email,
     password: CryptoJS.AES.encrypt(
       req.body.password,
@@ -25,8 +25,8 @@ router.post("/register", async (req, res) => {
 //LOGIN
 router.post("/login", async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.body._id });
-
+    const user = await User.findOne({ username: req.body.username });
+    
     if (!user) {
       res.status(401).json("Wrong User Name");
       return;
